@@ -19,6 +19,7 @@ jobs:
   job3:
     needs: job2
     runs-on: ubuntu-latest
+    if: ${{ !cancelled() }}
     steps:
       - name: Job 3
         run: echo "This is Job 3"

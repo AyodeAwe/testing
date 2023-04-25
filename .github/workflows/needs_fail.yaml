@@ -12,6 +12,11 @@ jobs:
     needs: job1
     runs-on: ubuntu-latest
     steps:
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          propagate_failure: true
+          trigger_workflow: true
+          wait_workflow: true
       - name: Job 2
         run: |
           echo "This is Job 2"

@@ -3,9 +3,9 @@ name: Nightly RAPIDS Pipeline Mock
 
 on: push
 
-# concurrency:
-#   group: nightly-${{ github.workflow }}-${{ github.ref }}
-#   cancel-in-progress: true
+concurrency:
+  group: nightly-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 
 

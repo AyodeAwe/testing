@@ -25,8 +25,8 @@ jobs:
     steps:
       - name: rmm-build
         run: |
-          echo "This job fails"
-          exit 1
+          echo "This job passes"
+          exit 0
   rmm-tests:
     needs: [get-run-info, rmm-build]
     if: ${{ needs.rmm-build.result == 'success' }}

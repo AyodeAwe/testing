@@ -25,8 +25,8 @@ jobs:
     steps:
       - name: rmm-build
         run: |
-          echo "This job passes"
-          exit 0
+          echo "This job fails"
+          exit 1
   rmm-tests:
     needs: [get-run-info, rmm-build]
     if: ${{ needs.rmm-build.result == 'success' }}
@@ -35,7 +35,7 @@ jobs:
       - name: rmm-tests
         run: echo "This is Job rmm-tests"
   cudf-build:
-    needs: [get-run-info, rmm-build, dask-cuda-build]
+    needs: [get-run-info, rmm-buil]
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
     steps:
@@ -43,176 +43,8 @@ jobs:
         run: echo "This is Job cudf-build"
   cudf-tests:
     needs: [get-run-info, cudf-build]
-    if: ${{ needs.cudf-build.result == 'success' }}
+    if: ${{ jobs.cudf-build.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: cudf-tests
         run: echo "This is Job cudf-tests"
-  raft-build:
-    needs: [get-run-info, rmm-build, dask-cuda-build]
-    runs-on: ubuntu-latest
-    if: ${{ !cancelled() }}
-    steps:
-      - name: raft-build
-        run: |
-          echo "This job fails"
-          exit 1
-  raft-tests:
-    needs: [get-run-info, raft-build, ucx-py-build]
-    if: ${{ needs.raft-build.result == 'success' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: raft-tests
-        run: echo "This is Job raft-tests"
-  cuml-build:
-    needs: [get-run-info, cudf-build, raft-build]
-    runs-on: ubuntu-latest
-    if: ${{ !cancelled() }}
-    steps:
-      - name: cuml-build
-        run: |
-          echo "This job fails"
-          exit 1
-  cuml-tests:
-    needs: [get-run-info, cuml-build]
-    if: ${{ needs.cuml-build.result == 'success' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: cuml-tests
-        run: echo "This is Job cuml-tests"
-  cugraph-build:
-    needs: [get-run-info, cudf-build, raft-build, dask-cuda-build]
-    runs-on: ubuntu-latest
-    if: ${{ !cancelled() }}
-    steps:
-      - name: cugraph-build
-        run: |
-          echo "This job fails"
-          exit 1
-  cugraph-tests:
-    needs: [get-run-info, cugraph-build]
-    if: ${{ needs.cugraph-build.result == 'success' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: cugraph-tests
-        run: echo "This is Job cugraph-tests"
-  cusignal-build:
-    needs: [get-run-info]
-    runs-on: ubuntu-latest
-    if: ${{ !cancelled() }}
-    steps:
-      - name: cusignal-build
-        run: echo "This is Job cusignal-build"
-  cusignal-tests:
-    needs: [get-run-info, cusignal-build]
-    if: ${{ needs.cusignal-build.result == 'success' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: cusignal-tests
-        run: echo "This is Job cusignal-tests"
-  cuspatial-build:
-    needs: [get-run-info, cudf-build]
-    runs-on: ubuntu-latest
-    if: ${{ !cancelled() }}
-    steps:
-      - name: cuspatial-build
-        run: echo "This is Job cuspatial-build"
-  cuspatial-tests:
-    needs: [get-run-info, cuspatial-build]
-    if: ${{ needs.cuspatial-build.result == 'success' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: cuspatial-tests
-        run: echo "This is Job cuspatial-tests"
-  cuxfilter-build:
-    needs: [get-run-info, cudf-build, cuspatial-build, dask-cuda-build]
-    runs-on: ubuntu-latest
-    if: ${{ !cancelled() }}
-    steps:
-      - name: cuxfilter-build
-        run: echo "This is Job cuxfilter-build"
-  cuxfilter-tests:
-    needs: [get-run-info, cuxfilter-build]
-    if: ${{ needs.cuxfilter-build.result == 'success' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: cuxfilter-tests
-        run: echo "This is Job cuxfilter-tests"
-  dask-cuda-build:
-    needs: [get-run-info]
-    runs-on: ubuntu-latest
-    if: ${{ !cancelled() }}
-    steps:
-      - name: dask-cuda-build
-        run: echo "This is Job dask-cuda-build"
-  dask-cuda-tests:
-    needs: [get-run-info, dask-cuda-build]
-    if: ${{ needs.dask-cuda-build.result == 'success' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: dask-cuda-tests
-        run: echo "This is Job dask-cuda-tests"
-  ucx-py-build:
-    needs: get-run-info
-    runs-on: ubuntu-latest
-    if: ${{ !cancelled() }}
-    steps:
-      - name: ucx-py-build
-        run: echo "This is Job ucx-py-build"
-  ucx-py-tests:
-    needs: [get-run-info, ucx-py-build]
-    if: ${{ needs.ucx-py-build.result == 'success' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: ucx-py-tests
-        run: |
-          echo "This job fails"
-          exit 1
-  cugraph-ops-build:
-    needs: [get-run-info, rmm-build, raft-build]
-    runs-on: ubuntu-latest
-    if: ${{ !cancelled() }}
-    steps:
-      - name: cugraph-ops-build
-        run: echo "This is Job cugraph-ops-build"
-  cugraph-ops-tests:
-    needs: [get-run-info, cugraph-ops-build]
-    if: ${{ needs.cugraph-ops-build.result == 'success' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: cugraph-ops-tests
-        run: echo "This is Job cugraph-ops-tests"
-  cucim-build:
-    needs: [get-run-info]
-    runs-on: ubuntu-latest
-    steps:
-      - name: cucim-build
-        run: echo "This is Job cucim-build"
-  cucim-tests:
-    needs: [get-run-info, cucim-build]
-    if: ${{ needs.cucim-build.result == 'success' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: cucim-tests
-        run: echo "This is Job cucim-tests"
-  cumlprims_mg-build:
-    needs: [get-run-info, raft-build]
-    runs-on: ubuntu-latest
-    if: ${{ !cancelled() }}
-    steps:
-      - name: cumlprims_mg-build
-        run: echo "This is Job cumlprims_mg-build"
-  ucxx-build:
-    needs: [get-run-info, rmm-build]
-    runs-on: ubuntu-latest
-    if: ${{ !cancelled() }}
-    steps:
-      - name: ucxx-build
-        run: echo "This is Job ucxx-build"
-  ucxx-tests:
-    needs: [get-run-info, ucxx-build]
-    if: ${{ needs.ucxx-build.result == 'success' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: ucxx-tests
-        run: echo "This is Job ucxx-tests"

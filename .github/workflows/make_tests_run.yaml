@@ -43,7 +43,7 @@ jobs:
         run: echo "This is Job cudf-build"
   cudf-tests:
     needs: [get-run-info, cudf-build]
-    if: ${{ !cancelled() }}
+    if: ${{ needs.cudf-build.result == 'success' && !cancelled() }}
     runs-on: ubuntu-latest
     steps:
       - name: cudf-tests

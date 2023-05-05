@@ -35,7 +35,7 @@ jobs:
       - name: rmm-tests
         run: echo "This is Job rmm-tests"
   cudf-build:
-    needs: [get-run-info, rmm-buil]
+    needs: [get-run-info, rmm-build]
     runs-on: ubuntu-latest
     if: ${{ !cancelled() }}
     steps:
@@ -43,7 +43,7 @@ jobs:
         run: echo "This is Job cudf-build"
   cudf-tests:
     needs: [get-run-info, cudf-build]
-    if: ${{ jobs.cudf-build.result == 'success' }}
+    if: ${{ needs.cudf-build.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: cudf-tests
